@@ -1,7 +1,5 @@
 package it.unibs.fp.PgAr2019_Esame_DiegoRossi;
 
-import java.util.ArrayList;
-
 public class Casella {
 	/**
 	 * CLASSE Casella

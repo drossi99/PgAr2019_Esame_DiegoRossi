@@ -1,11 +1,8 @@
 package it.unibs.fp.PgAr2019_Esame_DiegoRossi;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import it.unibs.fp.mylib.InputDati;
 
@@ -156,7 +153,6 @@ public class Partita {
 	public static ArrayList<Giocatore> newPartitaMultiplayer(int numGiocatori) {
 		int saldoIniziale;
 		ArrayList<Integer> listaPosStazioni = new ArrayList<Integer>();
-		ArrayList<Integer> classifica = new ArrayList<Integer>();
 		ArrayList<Giocatore> giocatori = new ArrayList<Giocatore>();
 		
 		System.out.println(BENVENUTI_MULTIPLAYER);
