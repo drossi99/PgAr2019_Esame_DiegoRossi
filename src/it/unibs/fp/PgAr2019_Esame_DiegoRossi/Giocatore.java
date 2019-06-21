@@ -6,6 +6,20 @@ public class Giocatore {
 
 	private int saldo;
 	private String nome;
+	private int posizione;
+	
+	public Giocatore(int saldo, String nome, int posizione) {
+		super();
+		this.saldo = saldo;
+		this.nome = nome;
+		this.posizione = posizione;
+	}
+	public int getPosizione() {
+		return posizione;
+	}
+	public void setPosizione(int posizione) {
+		this.posizione = posizione;
+	}
 	public int getSaldo() {
 		return saldo;
 	}
@@ -24,9 +38,14 @@ public class Giocatore {
 	}
 	
 	
+	public Giocatore(String nome, int posizione) {
+		super();
+		this.nome = nome;
+		this.posizione = posizione;
+	}
 	public static Giocatore creaGiocatore() {
 		String nome = InputDati.leggiStringa("Inserisci il nome del giocatore: ");
-		Giocatore newGiocatore = new Giocatore(nome);
+		Giocatore newGiocatore = new Giocatore(nome, 0);
 		
 		return newGiocatore;
 	}

@@ -15,16 +15,30 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		System.out.println(BENVENUTO);
+		int numGiocatori;
+		ArrayList<Giocatore> classifica = new ArrayList<Giocatore>();
 		
+		do {
+			numGiocatori = InputDati.leggiIntero("Per iniziare, diteci in quanti siete? Oppure vuoi fare una partita in single player?\n\tRicorda che è possibile giocare fino a un massimo di 4 giocatori");
+			if (numGiocatori < 1 || numGiocatori > 4)
+				System.out.println("Il numero dei giocatori non è accettato. RIPROVA");
+		} while (numGiocatori < 1 || numGiocatori > 4);
 
 		int scelta = 1;
 		do {
-			int vincitore = Partita.newPartita();
-			if (vincitore == 1) {
-				System.out.println(MSG_VITTORIA);
-			} else {
-				System.out.println(MSG_SCONFITTA);
+			int vincitore;
+			if (numGiocatori == 1) {
+				vincitore = Partita.newPartita();
+				if (vincitore == 1) {
+					System.out.println(MSG_VITTORIA);
+				} else {
+					System.out.println(MSG_SCONFITTA);
+				}
 			}
+			else {
+				classifica = Partita.newPartitaMultiplayer(numGiocatori);
+			}
+			
 			scelta = InputDati.leggiIntero(FINE_RICHIESTA_NUOVA_PARTITA);
 		} while (scelta == 1);
 	}
