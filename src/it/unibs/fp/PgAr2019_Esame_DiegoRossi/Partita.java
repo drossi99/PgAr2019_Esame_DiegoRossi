@@ -6,18 +6,6 @@ import java.util.Random;
 
 import it.unibs.fp.mylib.InputDati;
 
-/**
- * @author diego
- *
- */
-/**
- * @author diego
- *
- */
-/**
- * @author diego
- *
- */
 public class Partita {
 	private static final int LIMITE_AVVISO_POSITIVO = 900000;
 	private static final int LIMITE_AVVISO_NEGATIVO = 100000;
