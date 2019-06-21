@@ -40,7 +40,20 @@ public class Casella {
 	public void setListaMessaggi(String listaMessaggi) {
 		this.listaMessaggi = listaMessaggi;
 	}
+	public Casella(int id, String name, String type, int amount, String listaMessaggi) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.amount = amount;
+		this.listaMessaggi = listaMessaggi;
+	}
+	public Casella() {
+		super();
+	}
 	
+	
+
 	
 	
 }
