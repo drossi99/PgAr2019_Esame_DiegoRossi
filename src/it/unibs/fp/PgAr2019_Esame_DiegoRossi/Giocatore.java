@@ -4,6 +4,7 @@ import it.unibs.fp.mylib.InputDati;
 
 public class Giocatore {
 
+	private static final String RICHIESTA_NOME_GIOCATORE = "Inserisci il nome del giocatore: ";
 	private int saldo;
 	private String nome;
 	private int posizione;
@@ -44,7 +45,7 @@ public class Giocatore {
 		this.posizione = posizione;
 	}
 	public static Giocatore creaGiocatore() {
-		String nome = InputDati.leggiStringa("Inserisci il nome del giocatore: ");
+		String nome = InputDati.leggiStringa(RICHIESTA_NOME_GIOCATORE);
 		Giocatore newGiocatore = new Giocatore(nome, 0);
 		
 		return newGiocatore;

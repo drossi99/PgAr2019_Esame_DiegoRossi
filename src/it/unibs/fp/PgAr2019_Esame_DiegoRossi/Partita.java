@@ -10,6 +10,37 @@ import javax.xml.parsers.ParserConfigurationException;
 import it.unibs.fp.mylib.InputDati;
 
 public class Partita {
+	private static final String INIZ = "iniziale";
+	private static final String STAZ = "stazione";
+	private static final String IMPR = "imprevisto";
+	private static final String PROB = "probabilita";
+	private static final String PAGA = "\tTi vengono prelevati ";
+	private static final String VALUTA = " I€€€";
+	private static final String NUOVO_SALDO = "\tIl tuo nuovo saldo è ";
+	private static final String PREMIO = "\tRicevi un premio di ";
+	private static final String CAS_RAGGIUNTA = "Sei finito su una casella ";
+	private static final String SUCCESSO_STAZIONE_RAGGIUNTA = "Hai raggiunto con successo la casella stazione ";
+	private static final String RISPOSTA_NULLO_STAZIONE = "Tanto valeva che scegliessi 0";
+	private static final String RISPOSTA_NON_STAZIONE = "D'accordo, allora resterai qua";
+	private static final String RISPOSTA_STAZIONE_NON_ACCETTATA = "Sarebbe bello potersi spostare in qualunque casella, ma non è permesso. RIPROVA";
+	private static final String ZERO_RESTA = "Se non vuoi trasferirti, digita 0\n\t";
+	private static final String RICHIESTA_NUOVA_STAZIONE = "Seleziona quale stazione vuoi raggiungere: \n\t";
+	private static final String STAZIONI = " stazioni.";
+	private static final String STATO_CAS_STAZIONE = "Una casella di tipo stazione ti permette di raggiungere una delle altre stazioni. In questo tabellone sono presenti ";
+	private static final String STATO_CAS_INIZIALE = "La casella ti partenza ti dà un attimo di tregua. Per questo turno non succederà nulla";
+	private static final String DICHIARAZIONE_LANCIO = "\tÈ uscito il numero ";
+	private static final String RICHIESTA_LANCIO = "Tocca a te! Premi 1 per lanciare il dado\n\t";
+	private static final String TURNO_DADO = ". Tocca a te a lanciare il dado\n\t(Premi 1 per lanciare il dado)\n\t";
+	private static final String TURNO_DI = "È il turno di ";
+	private static final String DICHIARAZIONE_SALDO = "Hai un saldo di I€€€ ";
+	private static final String BENV_NOME = " Dicci come ti chiami!\n";
+	private static final String BENV_GIOC = "\n\n\nBenvenuto giocatore ";
+	private static final String FINE_IMMISSIONE_GIOCATORI = "Benissimo, ora siamo al completo! Via alla partita!";
+	private static final String STR_NOMI = "Per iniziare, inserite i vostri nomi";
+	private static final String BENVENUTI_MULTIPLAYER = "Benvenuti nella modalità multiplayer di Unipoly";
+	private static final String DICHIARAZIONE_CASELLA = "Sei finito sulla casella";
+	private static final String SEPARATORE = "*************************************\n\n";
+	private static final String SITUAZIONE_GIOCO = "\n\n*************************************\nSITUAZIONE DI GIOCO\nTi trovi sulla casella";
 	private static final int SALDO_FACILE = 700000;
 	private static final int SALDO_MEDIO = 500000;
 	private static final int SALDO_DIFFICILE = 200000;
@@ -47,10 +78,10 @@ public class Partita {
 		listaPosStazioni = contaStazioni(listaCaselle);
 		
 		do {
-			System.out.println("\n\n*************************************\nSITUAZIONE DI GIOCO\nTi trovi sulla casella");
+			System.out.println(SITUAZIONE_GIOCO);
 			stampaCasella(listaCaselle, giocatore.getPosizione());
-			System.out.println("Hai un saldo di I€€€ "+giocatore.getSaldo());
-			System.out.println("*************************************\n\n");
+			System.out.println(DICHIARAZIONE_SALDO+giocatore.getSaldo());
+			System.out.println(SEPARATORE);
 			int lancio = lancioDado(giocatore);
 			giocatore.setPosizione(giocatore.getPosizione() + lancio);
 			
@@ -58,7 +89,7 @@ public class Partita {
 				giocatore.setPosizione(giocatore.getPosizione()-listaCaselle.size());
 			}
 			
-			System.out.println("Sei finito sulla casella");
+			System.out.println(DICHIARAZIONE_CASELLA);
 			stampaCasella(listaCaselle, giocatore.getPosizione());
 			
 			eventoNuovaCasella(listaCaselle, giocatore.getPosizione(), giocatore, listaPosStazioni);
@@ -78,16 +109,16 @@ public class Partita {
 		ArrayList<Integer> classifica = new ArrayList<Integer>();
 		ArrayList<Giocatore> giocatori = new ArrayList<Giocatore>();
 		
-		System.out.println("Benvenuti nella modalità multiplayer di Unipoly");
+		System.out.println(BENVENUTI_MULTIPLAYER);
 		
 		
 		
-		System.out.println("Per iniziare, inserite i vostri nomi");
+		System.out.println(STR_NOMI);
 		for (int i = 0; i < numGiocatori; i++) {
-			System.out.println("\n\n\nBenvenuto giocatore " + (i+1) + "Dicci come ti chiami!");
+			System.out.println(BENV_GIOC + (i+1) + BENV_NOME);
 			giocatori.add(Giocatore.creaGiocatore());
 		}
-		System.out.println("Benissimo, ora siamo al completo! Via alla partita!");
+		System.out.println(FINE_IMMISSIONE_GIOCATORI);
 		
 		
 		
@@ -125,10 +156,10 @@ public class Partita {
 		
 		do {
 			for (int i = 0; i < numGiocatori; i++) {
-				System.out.println("\n\n*************************************\nSITUAZIONE DI GIOCO\nTi trovi sulla casella");
+				System.out.println(SITUAZIONE_GIOCO);
 				stampaCasella(listaCaselle, giocatori.get(i).getPosizione());
-				System.out.println("Hai un saldo di I€€€ "+giocatori.get(i).getSaldo());
-				System.out.println("*************************************\n\n");
+				System.out.println(DICHIARAZIONE_SALDO+giocatori.get(i).getSaldo());
+				System.out.println(SEPARATORE);
 				int lancio = lancioDado(giocatori.get(i));
 				giocatori.get(i).setPosizione(giocatori.get(i).getPosizione() + lancio);
 				
@@ -136,7 +167,7 @@ public class Partita {
 					giocatori.get(i).setPosizione(giocatori.get(i).getPosizione() - listaCaselle.size());
 				}
 				
-				System.out.println("Sei finito sulla casella");
+				System.out.println(DICHIARAZIONE_CASELLA);
 				stampaCasella(listaCaselle, giocatori.get(i).getPosizione());
 				
 				eventoNuovaCasella(listaCaselle, giocatori.get(i).getPosizione(), giocatori.get(i), listaPosStazioni);
@@ -187,14 +218,14 @@ public class Partita {
 	public static int lancioDado(Giocatore g){
 		int scelta;
 		do {
-			scelta = InputDati.leggiIntero("È il turno di " + g.getNome() + ". Tocca a te a lanciare il dado\n\t(Premi 1 per lanciare il dado)\n\t");
+			scelta = InputDati.leggiIntero(TURNO_DI + g.getNome() + TURNO_DADO);
 			if (scelta != 1)
-				System.out.println("Tocca a te! Premi 1 per lanciare il dado\n\t");
+				System.out.println(RICHIESTA_LANCIO);
 		} while (scelta != 1);
 		
 		Random rand = new Random();
 		int dado = rand.nextInt(6)+1;
-		System.out.println("\tÈ uscito il numero " + dado);
+		System.out.println(DICHIARAZIONE_LANCIO + dado);
 		return dado;
 	}
 	
@@ -206,15 +237,15 @@ public class Partita {
 	
 	public static void eventoNuovaCasella(ArrayList<Casella> listaCaselle, int posizione, Giocatore giocatore, ArrayList<Integer> listaPosStazioni) {
 		switch (listaCaselle.get(posizione).getType()) {
-		case "iniziale":
-			System.out.println("La casella ti partenza ti dà un attimo di tregua. Per questo turno non succederà nulla");
+		case INIZ:
+			System.out.println(STATO_CAS_INIZIALE);
 			break;
-		case "stazione":
+		case STAZ:
 			int k = 1;
 			int nuovaStazione;
 			
-			System.out.println("Una casella di tipo stazione ti permette di raggiungere una delle altre stazioni. In questo tabellone sono presenti " + listaPosStazioni.size() + " stazioni.");
-			System.out.println("Seleziona quale stazione vuoi raggiungere: \n\t");
+			System.out.println(STATO_CAS_STAZIONE + listaPosStazioni.size() + STAZIONI);
+			System.out.println(RICHIESTA_NUOVA_STAZIONE);
 			
 			for (int i = 0; i < listaPosStazioni.size(); i++) {
 				if (listaPosStazioni.get(i) != posizione) {
@@ -223,33 +254,33 @@ public class Partita {
 			}
 			
 			do {
-				nuovaStazione = InputDati.leggiIntero("Se non vuoi trasferirti, digita 0\n\t");
+				nuovaStazione = InputDati.leggiIntero(ZERO_RESTA);
 				if (!listaPosStazioni.contains(nuovaStazione) && nuovaStazione != 0)
-					System.out.println("Sarebbe bello potersi spostare in qualunque casella, ma non è permesso. RIPROVA");
+					System.out.println(RISPOSTA_STAZIONE_NON_ACCETTATA);
 			} while (!listaPosStazioni.contains(nuovaStazione) && nuovaStazione != 0);
 		
 			if (nuovaStazione == 0) {
-				System.out.println("D'accordo, allora resterai qua");
+				System.out.println(RISPOSTA_NON_STAZIONE);
 			} else {
 				if (nuovaStazione == posizione)
-					System.out.println("Tanto valeva che scegliessi 0");
+					System.out.println(RISPOSTA_NULLO_STAZIONE);
 				posizione = nuovaStazione;
-				System.out.println("Hai raggiunto con successo la casella stazione ");
+				System.out.println(SUCCESSO_STAZIONE_RAGGIUNTA);
 				stampaCasella(listaCaselle, posizione);
 			}
 
 			break;
-		case "probabilita":
+		case PROB:
 			giocatore.setSaldo(giocatore.getSaldo() + listaCaselle.get(posizione).getAmount());
-			System.out.println("Sei finito su una casella probabilità");
-			System.out.println("\tRicevi un premio di " + listaCaselle.get(posizione).getAmount() + " I€€€");
-			System.out.println("\tIl tuo nuovo saldo è " + giocatore.getSaldo());
+			System.out.println(CAS_RAGGIUNTA + PROB);
+			System.out.println(PREMIO + listaCaselle.get(posizione).getAmount() + VALUTA);
+			System.out.println(NUOVO_SALDO + giocatore.getSaldo());
 			break;
-		case "imprevisto":
+		case IMPR:
 			giocatore.setSaldo(giocatore.getSaldo() - listaCaselle.get(posizione).getAmount());
-			System.out.println("Sei finito su una casella imprevisti");
-			System.out.println("\tTi vengono prelevati " + listaCaselle.get(posizione).getAmount() + " I€€€");
-			System.out.println("\tIl tuo nuovo saldo è " + giocatore.getSaldo());
+			System.out.println(CAS_RAGGIUNTA + IMPR);
+			System.out.println(PAGA + listaCaselle.get(posizione).getAmount() + VALUTA);
+			System.out.println(NUOVO_SALDO + giocatore.getSaldo());
 			
 			break;
 		default:
@@ -261,7 +292,7 @@ public class Partita {
 		ArrayList<Integer> listaPosStazioni = new ArrayList<Integer>();
 		
 		for (int i = 0; i < listaCaselle.size(); i++) {
-			if (listaCaselle.get(i).getType().equals("stazione")) {
+			if (listaCaselle.get(i).getType().equals(STAZ)) {
 				listaPosStazioni.add(i);
 			}
 		}

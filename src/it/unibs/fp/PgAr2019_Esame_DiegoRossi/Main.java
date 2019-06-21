@@ -6,10 +6,12 @@ import it.unibs.fp.mylib.InputDati;
 
 public class Main {
 
+	private static final String NUM_GIOCATORI_NON_ACCETTATO = "Il numero dei giocatori non è accettato. RIPROVA";
+	private static final String RICHIESTA_NUMERO_GIOCATORI = "Per iniziare, diteci in quanti siete? Oppure vuoi fare una partita in single player?\n\tRicorda che è possibile giocare fino a un massimo di 4 giocatori";
 	private static final String FINE_RICHIESTA_NUOVA_PARTITA = "La partita è terminata. Vuoi iniziarne un'altra? (1 = Si, altro = No)\n\t";
 	private static final String MSG_SCONFITTA = "\n\n\nPECCATO, NON SEI RIUSCITO A VINCERE LA PARTITA";
 	private static final String MSG_VITTORIA = "****** COMPLIMENTI *****\nHAI VINTO LA PARTITA!";
-	private static final String BENVENUTO = "Benvenuto in Unipoly!\nÈ un avvincente gioco per testare le tue capacità di gestione immobiliare e un po' anche la tua fortuna\nInizia subito creando il giocatore!";
+	private static final String BENVENUTO = "Benvenuto in Unipoly!\nÈ un avvincente gioco per testare le tue capacità di gestione immobiliare e un po' anche la tua fortuna\n!";
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -19,9 +21,9 @@ public class Main {
 		ArrayList<Giocatore> classifica = new ArrayList<Giocatore>();
 		
 		do {
-			numGiocatori = InputDati.leggiIntero("Per iniziare, diteci in quanti siete? Oppure vuoi fare una partita in single player?\n\tRicorda che è possibile giocare fino a un massimo di 4 giocatori");
+			numGiocatori = InputDati.leggiIntero(RICHIESTA_NUMERO_GIOCATORI);
 			if (numGiocatori < 1 || numGiocatori > 4)
-				System.out.println("Il numero dei giocatori non è accettato. RIPROVA");
+				System.out.println(NUM_GIOCATORI_NON_ACCETTATO);
 		} while (numGiocatori < 1 || numGiocatori > 4);
 
 		int scelta = 1;
