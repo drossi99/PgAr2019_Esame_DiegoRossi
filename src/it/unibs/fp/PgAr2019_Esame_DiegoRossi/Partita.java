@@ -9,6 +9,18 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import it.unibs.fp.mylib.InputDati;
 
+/**
+ * @author diego
+ *
+ */
+/**
+ * @author diego
+ *
+ */
+/**
+ * @author diego
+ *
+ */
 public class Partita {
 	private static final String INIZ = "iniziale";
 	private static final String STAZ = "stazione";
@@ -47,18 +59,28 @@ public class Partita {
 	private static final String SALDO_NON_ACCETTATO = "Il valore inserito non è accettato! RIPROVA";
 	private static final String RICHIESTA_SALDO = "Ottimo! Manca poco per iniziare a giocare\nSeleziona quanto avvincente vorrai la tua partita\n\t[1] FACILE:\tSaldo iniziale = 700 000 I€€€\n\t[2] MEDIO:\tSaldo iniziale = 500 000 I€€€\n\t[3] DIFFICILE:\tSaldo iniziale = 200 000 I€€€\n\n\t";
 
-	public static int newPartita() {
+	/**
+	 * newPartitaSingleplayer, crea una nuova partita con 1 giocatore
+	 * @return int (1) se il giocatore vince, (0) se perde
+	 */
+	public static int newPartitaSingleplayer() {
+		//viene creato un nuovo giocatore
 		Giocatore giocatore = Giocatore.creaGiocatore();
 		int saldoIniziale;
+		//qui verranno salvate le posizioni assolute delle stazioni nella listaCaselle
 		ArrayList<Integer> listaPosStazioni = new ArrayList<Integer>();
 		
-		
+		/*
+		 * si chiede il livello di difficoltà (viene cambiato il saldo: facile = saldo alto / difficile = saldo basso)
+		 * finché il valore è valido (1, 2, 3)
+		 */
 		do {
 			saldoIniziale = InputDati.leggiIntero(RICHIESTA_SALDO);
 			if  (saldoIniziale != 1 && saldoIniziale != 2 && saldoIniziale != 3)
 				System.out.println(SALDO_NON_ACCETTATO);
 		} while (saldoIniziale != 1 && saldoIniziale != 2 && saldoIniziale != 3);
 		
+		//in base alla scelta viene settato il saldo del giocatore
 		switch (saldoIniziale) {
 		case 1:
 			giocatore.setSaldo(SALDO_FACILE);
@@ -73,36 +95,59 @@ public class Partita {
 			break;
 		}
 		
+		//viene letto il file XML
 		ArrayList<Casella> listaCaselle = Gestione.leggiXML();
 		
+		//vengono contate le stazioni all'interno del tabellone di gioco
 		listaPosStazioni = contaStazioni(listaCaselle);
 		
+		//finché il saldo del giocatore è valido (da 0 a 1 000 000 esclusi) gli viene dato il turno	
 		do {
 			System.out.println(SITUAZIONE_GIOCO);
+			//metodo per la stampa degli attributi utili di una casella
 			stampaCasella(listaCaselle, giocatore.getPosizione());
 			System.out.println(DICHIARAZIONE_SALDO+giocatore.getSaldo());
 			System.out.println(SEPARATORE);
+
+			//lancio di un dado (da 1 a 6 inclusi);
 			int lancio = lancioDado(giocatore);
+			//in base all'esito del lancio del dado viene modificata la posizione del giocatore
 			giocatore.setPosizione(giocatore.getPosizione() + lancio);
 			
+			/*
+			 * se la posizione è maggiore del numero di caselle del tabellone,
+			 * viene tolto il numero di caselle totali, in modo da non finire
+			 * in OutOfBounds
+			 */
 			if ((giocatore.getPosizione()) >= listaCaselle.size()){
 				giocatore.setPosizione(giocatore.getPosizione()-listaCaselle.size());
 			}
 			
+			//viene dichiarata la situazione del giocatore dopo lo spostamento
 			System.out.println(DICHIARAZIONE_CASELLA);
 			stampaCasella(listaCaselle, giocatore.getPosizione());
 			
+			//in base a dove si finisce viene modificato l'evento
 			eventoNuovaCasella(listaCaselle, giocatore.getPosizione(), giocatore, listaPosStazioni);
 			
-			} while (giocatore.getSaldo() > 0 && giocatore.getSaldo() <= 1000000);
+			} while (giocatore.getSaldo() > 0 && giocatore.getSaldo() < 1000000);
 		
+		//se il saldo finisce negativo, il giocatore perde
 		if (giocatore.getSaldo() <= 0) return 0;
 		
+		//ALTRIMENTI return 1 (vince)
 		return 1;
 		
 		
 	}
 	
+	
+	
+	/**
+	 * metodo per gestione della partita in multiplayer
+	 * @param numGiocatori : int
+	 * @return listaOrdinata in base al saldo
+	 */
 	public static ArrayList<Giocatore> newPartitaMultiplayer(int numGiocatori) {
 		int saldoIniziale;
 		ArrayList<Integer> listaPosStazioni = new ArrayList<Integer>();
@@ -111,23 +156,26 @@ public class Partita {
 		
 		System.out.println(BENVENUTI_MULTIPLAYER);
 		
-		
-		
 		System.out.println(STR_NOMI);
+		
+		//creazione di quanti giocatori sono stati richiesti
 		for (int i = 0; i < numGiocatori; i++) {
 			System.out.println(BENV_GIOC + (i+1) + BENV_NOME);
 			giocatori.add(Giocatore.creaGiocatore());
 		}
 		System.out.println(FINE_IMMISSIONE_GIOCATORI);
 		
-		
-		
+		/*
+		 * si chiede il livello di difficoltà (viene cambiato il saldo: facile = saldo alto / difficile = saldo basso)
+		 * finché il valore è valido (1, 2, 3)
+		 */
 		do {
 			saldoIniziale = InputDati.leggiIntero(RICHIESTA_SALDO);
 			if  (saldoIniziale != 1 && saldoIniziale != 2 && saldoIniziale != 3)
 				System.out.println(SALDO_NON_ACCETTATO);
 		} while (saldoIniziale != 1 && saldoIniziale != 2 && saldoIniziale != 3);
 		
+		//in base alla scelta viene settato il saldo dei giocatori
 		switch (saldoIniziale) {
 		case 1:
 			for (int i = 0; i < numGiocatori; i++) {
@@ -149,12 +197,16 @@ public class Partita {
 			break;
 		}
 		
+		//viene letto il file XML
 		ArrayList<Casella> listaCaselle = Gestione.leggiXML();
+		
+		//vengono contate le stazioni all'interno del tabellone di gioco
 		listaPosStazioni = contaStazioni(listaCaselle);
 		
 		
-		
+		//finché TUTTI i saldi dei giocatori sono positivi viene dato il turno
 		do {
+			//appena un giocatore ha saldo non accettato, viene terminato il giro di turni
 			for (int i = 0; i < numGiocatori; i++) {
 				System.out.println(SITUAZIONE_GIOCO);
 				stampaCasella(listaCaselle, giocatori.get(i).getPosizione());
@@ -172,19 +224,26 @@ public class Partita {
 				
 				eventoNuovaCasella(listaCaselle, giocatori.get(i).getPosizione(), giocatori.get(i), listaPosStazioni);
 				
+				//se il saldo è negativo, viene formata la classifica
 				if (giocatori.get(i).getSaldo()  < 0 && giocatori.get(i).getSaldo() >= 1000000)
 					return ordinaGiocatori(giocatori);
 				
 			}
 		} while (areSaldiPositivi(giocatori));
 			
+		//return classifica ordinata
 		return giocatori;
 	}
 
 	
 	
+	/**
+	 * @param listaGiocatori
+	 * @return boolean, true se TUTTI i saldi sono positivi
+	 */
 	public static boolean areSaldiPositivi(ArrayList<Giocatore> listaGiocatori) {
 		boolean saldiPositivi = true;
+		//appena si vede che un giocatore ha saldo negativo, return false
 		for (int i = 0; i < listaGiocatori.size(); i++) {
 			if (listaGiocatori.get(i).getSaldo() <= 0 || listaGiocatori.get(i).getSaldo() >= 1000000) {
 				saldiPositivi = false;
@@ -193,28 +252,45 @@ public class Partita {
 		}
 		return saldiPositivi;
 	}
+	
+	
+	/**
+	 * ordina ordina giocatori secondo il saldo
+	 * @param listaGiocatori
+	 * @return lsitaGiocatori ordinata
+	 */
 	public static ArrayList<Giocatore> ordinaGiocatori(ArrayList<Giocatore> listaGiocatori) {
 		for(int i = 0; i < listaGiocatori.size(); i++) {
 	            boolean flag = false;
 	            for(int j = 0; j < listaGiocatori.size()-1; j++) {
 
-	                //Se l' elemento j e maggiore del successivo allora
-	                //scambiamo i valori
-	                if(listaGiocatori.get(j).getSaldo() > listaGiocatori.get(j+1).getSaldo()) {
+	                /*
+	                 * Se l' elemento j è maggiore del successivo allora
+	                 * scambio i valori
+	                 */
+	               if(listaGiocatori.get(j).getSaldo() > listaGiocatori.get(j+1).getSaldo()) {
 	                   Collections.swap(listaGiocatori, i, j);
-	                    flag=true; //Lo setto a true per indicare che é avvenuto uno scambio
+	                   //setto a true per indicare che é avvenuto uno scambio
+	                   flag=true;
 	                }
 	                
 
 	            }
 
-	            if(!flag) break; //Se flag=false allora vuol dire che nell' ultima iterazione
-	                             //non ci sono stati scambi, quindi il metodo può terminare
-	                             //poiché l' array risulta ordinato
+	            /*
+	             * se è false non è stata fatta alcuna modifica perché la lista
+	             * risulta già ordinata
+	             */
+	            if(!flag) break; 
 	        }
 		return listaGiocatori;
 	}
 	
+
+	/**
+	 * @param giocatore, (per il nome)
+	 * @return int da 1 a 6 inclusi che simula un dado
+	 */
 	public static int lancioDado(Giocatore g){
 		int scelta;
 		do {
@@ -229,54 +305,80 @@ public class Partita {
 		return dado;
 	}
 	
+	
+	/**
+	 * stampta gli attributi di una casella utili in un turno (id, nome, tipo)
+	 * @param lista delle caselle
+	 * @param pos, posizione della casella da stampare
+	 */
 	public static void stampaCasella(ArrayList<Casella> lista, int pos) {
 		System.out.println("\t" + lista.get(pos).getId());
 		System.out.println("\t" + lista.get(pos).getName());
 		System.out.println("\t" + lista.get(pos).getType());
 	}
 	
+	
+	/**
+	 * @param listaCaselle, lista delle caselle del tabellone
+	 * @param posizione, posizione della casella cui far riferimento
+	 * @param giocatore, per modificare il saldo
+	 * @param listaPosStazioni, se la casella è una stazione serve far vedere la lista stazioni in cui
+	 * ci si potrà muovere
+	 */
 	public static void eventoNuovaCasella(ArrayList<Casella> listaCaselle, int posizione, Giocatore giocatore, ArrayList<Integer> listaPosStazioni) {
+		//viene switchato il tipo della casella
 		switch (listaCaselle.get(posizione).getType()) {
 		case INIZ:
+			//se si tratta della casella iniziale non deve succedere niente
 			System.out.println(STATO_CAS_INIZIALE);
 			break;
 		case STAZ:
-			int k = 1;
 			int nuovaStazione;
 			
 			System.out.println(STATO_CAS_STAZIONE + listaPosStazioni.size() + STAZIONI);
 			System.out.println(RICHIESTA_NUOVA_STAZIONE);
 			
+			//vengono stampate le stazioni in cui è possibile spostarsi
 			for (int i = 0; i < listaPosStazioni.size(); i++) {
 				if (listaPosStazioni.get(i) != posizione) {
 					System.out.println("\t[" + listaPosStazioni.get(i) + "] " + listaCaselle.get(listaPosStazioni.get(i)).getName());
 				}
 			}
 			
+			//viene richiesta la posizione della stazione in cui ci si vuole muovere, finché il valore è accettato
 			do {
 				nuovaStazione = InputDati.leggiIntero(ZERO_RESTA);
 				if (!listaPosStazioni.contains(nuovaStazione) && nuovaStazione != 0)
 					System.out.println(RISPOSTA_STAZIONE_NON_ACCETTATA);
 			} while (!listaPosStazioni.contains(nuovaStazione) && nuovaStazione != 0);
 		
+			//con 0 non succede niente
 			if (nuovaStazione == 0) {
 				System.out.println(RISPOSTA_NON_STAZIONE);
 			} else {
+				/*
+				 * se il numero è uguale alla posizione attuale, viene comunque accettato
+				 * ma viene stampato un messaggio
+				 */
 				if (nuovaStazione == posizione)
 					System.out.println(RISPOSTA_NULLO_STAZIONE);
 				posizione = nuovaStazione;
+				
+				//stazione raggiunta con successo
 				System.out.println(SUCCESSO_STAZIONE_RAGGIUNTA);
 				stampaCasella(listaCaselle, posizione);
 			}
 
 			break;
 		case PROB:
+			//su casella probabilità il saldo viene aumentato
 			giocatore.setSaldo(giocatore.getSaldo() + listaCaselle.get(posizione).getAmount());
 			System.out.println(CAS_RAGGIUNTA + PROB);
 			System.out.println(PREMIO + listaCaselle.get(posizione).getAmount() + VALUTA);
 			System.out.println(NUOVO_SALDO + giocatore.getSaldo());
 			break;
 		case IMPR:
+			//su casella imprevisti il saldo viene diminuito
 			giocatore.setSaldo(giocatore.getSaldo() - listaCaselle.get(posizione).getAmount());
 			System.out.println(CAS_RAGGIUNTA + IMPR);
 			System.out.println(PAGA + listaCaselle.get(posizione).getAmount() + VALUTA);
@@ -288,6 +390,10 @@ public class Partita {
 			}
 	}
 	
+	/**
+	 * @param listaCaselle
+	 * @return lsita con posizioni delle stazioni in un tabellone (verifica sulla stringa type)
+	 */
 	public static ArrayList<Integer> contaStazioni (ArrayList<Casella> listaCaselle) {
 		ArrayList<Integer> listaPosStazioni = new ArrayList<Integer>();
 		

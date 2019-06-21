@@ -4,6 +4,11 @@ import it.unibs.fp.mylib.InputDati;
 
 public class Giocatore {
 
+	
+	/**
+	 * CLASSE Giocatore
+	 * 3 attributi SALDO, NOME, POSIZIONE
+	 */
 	private static final String RICHIESTA_NOME_GIOCATORE = "Inserisci il nome del giocatore: ";
 	private int saldo;
 	private String nome;
@@ -44,6 +49,12 @@ public class Giocatore {
 		this.nome = nome;
 		this.posizione = posizione;
 	}
+	
+	/**
+	 * creaGiocatore, viene creato un nuovo giocatore, chiedendo in input da tastiera il nome
+	 * la posizione iniziale è impostata a 0
+	 * @return new Giocatore
+	 */
 	public static Giocatore creaGiocatore() {
 		String nome = InputDati.leggiStringa(RICHIESTA_NOME_GIOCATORE);
 		Giocatore newGiocatore = new Giocatore(nome, 0);
