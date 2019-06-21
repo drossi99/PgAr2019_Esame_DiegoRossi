@@ -22,6 +22,10 @@ import it.unibs.fp.mylib.InputDati;
  *
  */
 public class Partita {
+	private static final int LIMITE_AVVISO_POSITIVO = 900000;
+	private static final int LIMITE_AVVISO_NEGATIVO = 100000;
+	private static final String AVVISO_POSITIVO = "\tManca poco alla vittoria, ora vedi di non spendere troppo!";
+	private static final String AVVISO_NEGATIVO = "\tAttenzione alle tue finanze!";
 	private static final String INIZ = "iniziale";
 	private static final String STAZ = "stazione";
 	private static final String IMPR = "imprevisto";
@@ -45,7 +49,7 @@ public class Partita {
 	private static final String TURNO_DADO = ". Tocca a te a lanciare il dado\n\t(Premi 1 per lanciare il dado)\n\t";
 	private static final String TURNO_DI = "È il turno di ";
 	private static final String DICHIARAZIONE_SALDO = "Hai un saldo di I€€€ ";
-	private static final String BENV_NOME = " Dicci come ti chiami!\n";
+	private static final String BENV_NOME = "\n\tDicci come ti chiami!\n";
 	private static final String BENV_GIOC = "\n\n\nBenvenuto giocatore ";
 	private static final String FINE_IMMISSIONE_GIOCATORI = "Benissimo, ora siamo al completo! Via alla partita!";
 	private static final String STR_NOMI = "Per iniziare, inserite i vostri nomi";
@@ -107,6 +111,7 @@ public class Partita {
 			//metodo per la stampa degli attributi utili di una casella
 			stampaCasella(listaCaselle, giocatore.getPosizione());
 			System.out.println(DICHIARAZIONE_SALDO+giocatore.getSaldo());
+			avvisoSaldo(giocatore.getSaldo());
 			System.out.println(SEPARATORE);
 
 			//lancio di un dado (da 1 a 6 inclusi);
@@ -211,6 +216,7 @@ public class Partita {
 				System.out.println(SITUAZIONE_GIOCO);
 				stampaCasella(listaCaselle, giocatori.get(i).getPosizione());
 				System.out.println(DICHIARAZIONE_SALDO+giocatori.get(i).getSaldo());
+				avvisoSaldo(giocatori.get(i).getSaldo());
 				System.out.println(SEPARATORE);
 				int lancio = lancioDado(giocatori.get(i));
 				giocatori.get(i).setPosizione(giocatori.get(i).getPosizione() + lancio);
@@ -235,6 +241,15 @@ public class Partita {
 		return giocatori;
 	}
 
+	
+	public static void avvisoSaldo(int saldo) {
+		if (saldo<LIMITE_AVVISO_NEGATIVO)
+			System.out.println(AVVISO_NEGATIVO);
+		else {
+			if (saldo>LIMITE_AVVISO_POSITIVO)
+				System.out.println(AVVISO_POSITIVO);
+		}
+	}
 	
 	
 	/**
@@ -268,7 +283,7 @@ public class Partita {
 	                 * Se l' elemento j è maggiore del successivo allora
 	                 * scambio i valori
 	                 */
-	               if(listaGiocatori.get(j).getSaldo() > listaGiocatori.get(j+1).getSaldo()) {
+	               if(listaGiocatori.get(j).getSaldo() < listaGiocatori.get(j+1).getSaldo()) {
 	                   Collections.swap(listaGiocatori, i, j);
 	                   //setto a true per indicare che é avvenuto uno scambio
 	                   flag=true;

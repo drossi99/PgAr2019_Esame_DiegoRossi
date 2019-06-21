@@ -9,7 +9,7 @@ public class Main {
 	private static final String END = "Grazie per aver giocato!";
 	private static final String NUM_GIOCATORI_NON_ACCETTATO = "Il numero dei giocatori non è accettato. RIPROVA";
 	private static final String RICHIESTA_NUMERO_GIOCATORI = "Per iniziare, diteci in quanti siete? Oppure vuoi fare una partita in single player?\n\tRicorda che è possibile giocare fino a un massimo di 4 giocatori\n\t";
-	private static final String FINE_RICHIESTA_NUOVA_PARTITA = "La partita è terminata. Vuoi iniziarne un'altra? (1 = Si, altro = No)\n\t";
+	private static final String FINE_RICHIESTA_NUOVA_PARTITA = "\nLa partita è terminata. Vuoi iniziarne un'altra? (1 = Si, altro = No)\n\t";
 	private static final String MSG_SCONFITTA = "\n\n\nPECCATO, NON SEI RIUSCITO A VINCERE LA PARTITA";
 	private static final String MSG_VITTORIA = "****** COMPLIMENTI *****\nHAI VINTO LA PARTITA!";
 	private static final String BENVENUTO = "Benvenuto in Unipoly!\nÈ un avvincente gioco per testare le tue capacità di gestione immobiliare e un po' anche la tua fortuna\n!";
@@ -49,11 +49,12 @@ public class Main {
 			//ALTRIMENTI, se è multiplayer, viene chiamato il metodo partita multiplayer(argomento: numero di giocatori)
 			else {
 				classifica = Partita.newPartitaMultiplayer(numGiocatori);
+				System.out.println("\n\n\nFINE PARTITA\n\tAbbiamo un vincitore!\n");
 				for (int i = 0; i < classifica.size(); i++) {
 					if (i == 0) {
-						System.out.println((i+1) +".\t" + classifica.get(i).getNome().toUpperCase() + "\tcon un saldo di I€€€" + classifica.get(i).getSaldo());
+						System.out.println((i+1) +".\t" + classifica.get(i).getNome().toUpperCase() + "\tcon un saldo di I€€€ " + classifica.get(i).getSaldo());
 					}
-					else System.out.println((i+1) +".\t" + classifica.get(i).getNome() + "\tcon un saldo di I€€€" + classifica.get(i).getSaldo());
+					else System.out.println((i+1) +".\t" + classifica.get(i).getNome() + "\tcon un saldo di I€€€ " + classifica.get(i).getSaldo());
 				}
 			}
 			
