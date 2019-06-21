@@ -3,12 +3,11 @@ package it.unibs.fp.PgAr2019_Esame_DiegoRossi;
 import it.unibs.fp.mylib.InputDati;
 
 public class Giocatore {
-
-	
 	/**
 	 * CLASSE Giocatore
 	 * 3 attributi SALDO, NOME, POSIZIONE
 	 */
+	
 	private static final String RICHIESTA_NOME_GIOCATORE = "Inserisci il nome del giocatore: ";
 	private int saldo;
 	private String nome;
